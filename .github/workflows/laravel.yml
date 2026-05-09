@@ -1,0 +1,85 @@
+name: Laravel CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  php-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          coverage: none
+
+      - name: Install Composer dependencies
+        run: composer install --no-interaction --prefer-dist
+
+      - name: Prepare app
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+          mkdir -p database
+          test -f database/database.sqlite || touch database/database.sqlite
+          php artisan migrate --force
+
+      - name: Run PHP tests
+        run: php artisan test
+
+  playwright:
+    needs: php-tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Node dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          coverage: none
+
+      - name: Install Composer dependencies
+        run: composer install --no-interaction --prefer-dist
+
+      - name: Prepare app
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+          mkdir -p database
+          test -f database/database.sqlite || touch database/database.sqlite
+          php artisan migrate --force
+
+      - name: Start app
+        run: php artisan serve --host=127.0.0.1 --port=8000 &
+
+      - name: Run Playwright tests
+        env:
+          PLAYWRIGHT_BASE_URL: http://127.0.0.1:8000
+        run: npx playwright test
+
+      - name: Upload Playwright report (on failure)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: |
+            playwright-report/
+            test-results/
+
