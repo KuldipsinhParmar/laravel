@@ -1,8 +1,11 @@
 # Laravel
 /vendor/
 /node_modules/
+/public/build
 .env
 .phpunit.result.cache
+/test-results/
+/playwright-report/
 /public/hot
 /public/storage
 /storage/*.key

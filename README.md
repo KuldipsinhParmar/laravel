@@ -53,6 +53,23 @@ In order to ensure that the Laravel community is welcoming to all, please review
 
 If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
 
+## Running tests locally
+
+```bash
+cp .env.example .env && php artisan key:generate
+touch database/database.sqlite
+php artisan migrate --env=testing
+php artisan test
+npm install --include=dev && npx playwright install --with-deps
+NODE_ENV=development npx playwright test
+```
+
+If your shell forces `NODE_ENV=production` (skipping devDependencies), keep using `npm install --include=dev` before `npm run build` / Playwright.
+
+Playwright starts `php artisan serve` with `AUTO_VERIFY_EMAILS=1` so new registrations can reach `/dashboard` without clicking an email link (see `playwright.config.ts` and `scripts/playwright-server.sh`). PHPUnit runs with `AUTO_VERIFY_EMAILS` off.
+
+On **linux-arm64**, Playwright does not ship Chromium; browser bundles still expect distro libraries (GTK, GStreamer, ICU, etc.). Use a normal desktop/CI image and run `npx playwright install --with-deps`, or run Playwright from [the official Docker image](https://playwright.dev/docs/docker).
+
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
