@@ -12,8 +12,7 @@ export default defineConfig({
     },
     projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],
     webServer: {
-        command:
-            'bash -lc \'set -e; test -f .env || cp .env.example .env; php artisan key:generate --force; touch database/database.sqlite; php artisan migrate --force; exec env AUTO_VERIFY_EMAILS=1 php artisan serve --host=127.0.0.1 --port=8000\'',
+        command: 'bash scripts/playwright-server.sh',
         url: 'http://127.0.0.1:8000',
         reuseExistingServer: !process.env.CI,
         timeout: 120_000,

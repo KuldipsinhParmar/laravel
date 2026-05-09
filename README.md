@@ -66,7 +66,9 @@ NODE_ENV=development npx playwright test
 
 If your shell forces `NODE_ENV=production` (skipping devDependencies), keep using `npm install --include=dev` before `npm run build` / Playwright.
 
-Playwright starts `php artisan serve` with `AUTO_VERIFY_EMAILS=1` so new registrations can reach `/dashboard` without clicking an email link (see `playwright.config.ts`). PHPUnit runs with `AUTO_VERIFY_EMAILS` off.
+Playwright starts `php artisan serve` with `AUTO_VERIFY_EMAILS=1` so new registrations can reach `/dashboard` without clicking an email link (see `playwright.config.ts` and `scripts/playwright-server.sh`). PHPUnit runs with `AUTO_VERIFY_EMAILS` off.
+
+On **linux-arm64**, Playwright does not ship Chromium; browser bundles still expect distro libraries (GTK, GStreamer, ICU, etc.). Use a normal desktop/CI image and run `npx playwright install --with-deps`, or run Playwright from [the official Docker image](https://playwright.dev/docs/docker).
 
 ## License
 
