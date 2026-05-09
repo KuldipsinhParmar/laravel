@@ -123,4 +123,17 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Playwright / local browser automation
+    |--------------------------------------------------------------------------
+    |
+    | When true, newly registered users receive email_verified_at immediately.
+    | Used only for Playwright (see playwright.config.ts webServer). Never
+    | enable this in production.
+    |
+    */
+
+    'auto_verify_emails' => (bool) env('AUTO_VERIFY_EMAILS', false),
+
 ];
