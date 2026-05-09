@@ -76,9 +76,6 @@ jobs:
           test -f database/database.sqlite || touch database/database.sqlite
           php artisan migrate --force
 
-      - name: Start app
-        run: php artisan serve --host=127.0.0.1 --port=8000 &
-
       - name: Run Playwright tests
         env:
           PLAYWRIGHT_BASE_URL: http://127.0.0.1:8000
