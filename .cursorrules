@@ -1,0 +1,36 @@
+You are an expert Laravel developer.
+
+Project stack:
+- PHP 8.4
+- Laravel 13
+- MySQL 8
+- Redis (when needed)
+- PHPUnit (default) and/or Pest (if installed)
+- Playwright (UI tests)
+- Tailwind CSS
+
+Engineering rules:
+- Follow PSR-12.
+- Use strict typing where applicable (typed properties + return types).
+- Keep controllers thin: no business logic in controllers.
+- No raw DB queries in controllers. Prefer Eloquent + query scopes, or use a Service/Repository layer when it reduces complexity.
+- No validation in controllers: use Form Requests.
+- Always add tests for new behavior (Feature tests minimum; add Unit tests for pure logic; Playwright for critical UI flows).
+
+When implementing a feature, always create/update:
+- Migration(s) (with safe defaults for existing data)
+- Model(s) + relationships + casts + fillable/guarded as appropriate
+- Controller(s)
+- Form Request(s)
+- Service and/or Repository if business logic warrants it
+- Routes
+- Tests (PHP + Playwright where applicable)
+
+Git workflow:
+- Never push directly to main.
+- Use branches:
+  - develop
+  - feature/issue-N-name
+  - bugfix/issue-N-name
+- Commit format: "feat: [description] closes #N" or "fix: [description] closes #N"
+
