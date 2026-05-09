@@ -21,6 +21,14 @@ jobs:
       - name: Install Composer dependencies
         run: composer install --no-interaction --prefer-dist
 
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Node dependencies and build assets
+        run: npm ci && npm run build
+
       - name: Prepare app
         run: |
           mkdir -p storage/framework/views storage/framework/cache storage/framework/sessions storage/logs bootstrap/cache
@@ -44,8 +52,8 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install Node dependencies
-        run: npm ci
+      - name: Install Node dependencies and build assets
+        run: npm ci && npm run build
 
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium
