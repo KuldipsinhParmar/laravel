@@ -23,6 +23,7 @@ jobs:
 
       - name: Prepare app
         run: |
+          mkdir -p storage/framework/views storage/framework/cache storage/framework/sessions storage/logs bootstrap/cache
           cp .env.example .env
           php artisan key:generate
           mkdir -p database
@@ -60,6 +61,7 @@ jobs:
 
       - name: Prepare app
         run: |
+          mkdir -p storage/framework/views storage/framework/cache storage/framework/sessions storage/logs bootstrap/cache
           cp .env.example .env
           php artisan key:generate
           mkdir -p database
